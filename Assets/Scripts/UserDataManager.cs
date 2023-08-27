@@ -14,10 +14,19 @@ public class UserDataManager : MonoBehaviour
         "https://assets.objkt.media/file/assets-003/QmPUmoTb2LRNPhgGHEWDnXVR49tmQANH8woaR22k5dQ6Yv/artifact",
         "https://assets.objkt.media/file/assets-003/QmNMUJ7unj3W42Nj5TAgR99m1NMx19rGAMNVKSp7MtiS4C/artifact",
         "https://assets.objkt.media/file/assets-003/QmcaVeBdMo2mVdi1P2PPY2xDFSQbM7w7Aoo9VqgBuvWTE1/artifact",
-        // "https://assets.objkt.media/file/assets-003/QmQU1zD2Z3yPGeFfaZA9kUQXQ41png8ZS5WR6szAyS7cm1/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmQU1zD2Z3yPGeFfaZA9kUQXQ41png8ZS5WR6szAyS7cm1/artifact",
         "https://assets.objkt.media/file/assets-003/QmemFfu9U9aGBAb2UMfGJhUVXqCL5DmKMs87a2RNKLHunN/artifact",
-        "https://assets.objkt.media/file/assets-003/QmVNofJa6GjaoW7BGD1Vsy3ujYeEUVeVcAaW2CmyNCfhdw/artifact"
-        // "https://assets.objkt.media/file/assets-003/QmbtByc2D4W9VVXMutVYya1hTVwRwAdEPUP8WgDrGVjfWL/artifact"
+        "https://assets.objkt.media/file/assets-003/QmVNofJa6GjaoW7BGD1Vsy3ujYeEUVeVcAaW2CmyNCfhdw/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmbtByc2D4W9VVXMutVYya1hTVwRwAdEPUP8WgDrGVjfWL/artifact", 
+        // // //"https://assets.objkt.media/file/assets-003/QmT6vWb53dz93B3Gg65UH3AwjkU87GbuNvVX78gNcMhyLC/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmeakFtQXSve3dT2qXMboPmqENEHJ93cQU1awNqdVkoXL5/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmSMa55rf6gCTtrd4VAyS9QqvsqL8bPd3J6NgBBBbCeYGz/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmZ5QkR2paZtLpS9K4GvFb9dvVv2iDC2QhsEMNhYzSgPEx/artifact",
+        // // "https://assets.objkt.media/file/assets-003/QmZueUZre3H3fH5PTamebTgQpFjeoVFUk3pafsPaEQdXbS/artifact/index.html",
+        "https://assets.objkt.media/file/assets-003/QmVdsiNo1geanFDeDodknMKkXCBpPGUcVyLH5GTWqJPL6G/artifact",
+        "https://assets.objkt.media/file/assets-003/QmfXDcK11JavqDLdnRwKJgtwk3DWvAZd2VgSabT95JzRwU/artifact",
+        "https://assets.objkt.media/file/assets-003/QmRYsvwDbQApetmdGsezXGRfcYjqkHVCwCJPXdcNLxu3mq/artifact",
+        "https://assets.objkt.media/file/assets-003/QmQ9TDpXtYZcnx1KnGUz3fDJQQLRSa5d2N91ns8QH5Z2fR/artifact"
     };
 
     private int _itemPositionIndex;
@@ -80,6 +89,15 @@ public class UserDataManager : MonoBehaviour
                 maxParentSize * scaleRatio / boundsSize,
                 maxParentSize * scaleRatio / boundsSize,
                 maxParentSize * scaleRatio / boundsSize);
+
+            foreach (Transform child in model.transform)
+            {
+                child.position = new Vector3(
+                    model.transform.position.x,
+                    model.transform.position.y,
+                    model.transform.position.z);
+            }
+            
             parent.GetComponentInChildren<Light>().enabled = true;
         }
     }

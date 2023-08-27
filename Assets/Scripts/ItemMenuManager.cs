@@ -26,7 +26,7 @@ public class ItemMenuManager : MonoBehaviour
         _currentModel = Instantiate(obj, _modelPosition.transform, false);
 
         _currentModel.transform.localPosition = Vector3.zero;
-        _currentModel.transform.localRotation = Quaternion.identity;
+        _currentModel.transform.localRotation = obj.transform.localRotation;
 
         foreach (Transform child in _currentModel.transform)
         {
@@ -35,7 +35,6 @@ public class ItemMenuManager : MonoBehaviour
                 _currentModel.transform.position.y,
                 _currentModel.transform.position.z);
         }
-        _currentModel.AddComponent<ItemMenuRotation>();
         ChangeLayers(_currentModel, "UI");
     }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     private ItemMenuManager _menuManager;
+    
     // Start is called before the first frame update
     void Start()
     {
