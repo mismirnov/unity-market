@@ -7,8 +7,6 @@ using UnityEngine.Networking;
 
 public class UserDataManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     private readonly string[] _userModels =
     {
         "https://assets.objkt.media/file/assets-003/Qmd3A5LayPoyhoTyAeQkPForCPZsqQtnzHNTGayXRNb28K/artifact",
@@ -23,10 +21,15 @@ public class UserDataManager : MonoBehaviour
     };
 
     private int _itemPositionIndex;
-    private const int ItemsMaxCount = 20;
+    private int _itemsMaxCount;
     
     void Start()
     {
+        var itemPlaces = GameObject.Find("Barrels");
+        _itemsMaxCount = itemPlaces != null
+            ? GameObject.Find("Barrels").transform.childCount
+            : 0;
+        
         StartCoroutine(LoadUserModels(ModelLoaded));
     }
 
@@ -35,9 +38,15 @@ public class UserDataManager : MonoBehaviour
         _itemPositionIndex++;
         var model = Importer.LoadFromBytes(bytes);
         var parent = GameObject.Find($"barrel ({_itemPositionIndex})");
-        
-        model.transform.parent = parent.transform;
-        model.transform.position = parent.transform.position + new Vector3(0, 1.5f, 0);
+
+        var item = parent.transform.Find("Item");
+        parent.TryGetComponent<Renderer>(out var parentSize);
+        var parentLocalBounds = parentSize.bounds;
+        var maxParentSize = Math.Max(parentLocalBounds.size.x, Math.Max(parentLocalBounds.size.y, parentLocalBounds.size.z));
+        const float scaleRatio = 1/2f;
+
+        model.transform.parent = item.transform;
+        model.transform.position = item.transform.position;
 
         parent.TryGetComponent<ItemSelection>(out var script);
         if (script != null)
@@ -45,7 +54,7 @@ public class UserDataManager : MonoBehaviour
 
         float boundsSize = 0;
         var meshes = model.GetComponentsInChildren<Renderer>();
-
+        
         if (meshes.Length == 0)
         {
             Destroy(model);
@@ -61,23 +70,16 @@ public class UserDataManager : MonoBehaviour
             {
                 var size = mesh.bounds.size;
                 var maxSize = Math.Max(size.x, Math.Max(size.y, size.z));
-            
+
                 if (boundsSize >= maxSize) continue;
         
                 boundsSize = maxSize;
             }
-        
-            var scaleRatio = boundsSize switch
-            {
-                > 1000 => 0.0001f,
-                > 200 => 0.002f,
-                > 100 => 0.001f,
-                > 50 => 0.05f,
-                > 1 => 0.1f,
-                _ => 1f
-            };
-        
-            model.transform.localScale = new Vector3(scaleRatio, scaleRatio, scaleRatio);
+
+            model.transform.localScale = new Vector3(
+                maxParentSize * scaleRatio / boundsSize,
+                maxParentSize * scaleRatio / boundsSize,
+                maxParentSize * scaleRatio / boundsSize);
             parent.GetComponentInChildren<Light>().enabled = true;
         }
     }
@@ -86,7 +88,7 @@ public class UserDataManager : MonoBehaviour
     {
         foreach (var url in _userModels)
         {
-            if (_itemPositionIndex >= ItemsMaxCount) break;
+            if (_itemPositionIndex >= _itemsMaxCount) break;
             
             var www = UnityWebRequest.Get(url);
             yield return www.SendWebRequest();
